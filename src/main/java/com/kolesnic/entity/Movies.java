@@ -16,10 +16,10 @@ public class  Movies{
     @Column(name = "Id", unique = true, nullable = false)
     private Long id;
 
-    @Column(name = "NAME", length = 50)
+    @Column(name = "NAME", length = 50, unique = true)
     private String name;
 
-    @Column(name = "DESCRIPTION")
+    @Column(name = "DESCRIPTION", unique = true)
     private String description;
 
     public Movies(){}

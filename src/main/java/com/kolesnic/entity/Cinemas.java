@@ -1,27 +1,23 @@
 package com.kolesnic.entity;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Entity
 @Table(name = "CINEMAS")
 public class Cinemas{
 
     @Id
-    @GeneratedValue
-    @Column(name = "ID")
-    private int id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "ID", unique = true, nullable = false)
+    private Long id;
 
-    @Column(name = "NAME")
+    @Column(name = "Name", unique = true, length = 30, nullable = false)
     private String name;
 
-    @Column(name = "ADRESS")
+    @Column(name = "ADRES", unique = true, length = 50, nullable = false)
     private String location;
 
-    @Column(name = "NUMBER_OF_SEATS")
+    @Column(name = "NUMBER_OF_SEATS", length = 3, unique = true, nullable = false)
     private int numberOfSeats;
 
    public Cinemas(){}
@@ -30,11 +26,11 @@ public class Cinemas{
         return name;
     }
 
-    public int getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
