@@ -22,12 +22,16 @@ import java.sql.SQLException;
 
 public class FrontController {
 
+    @Autowired
+    private MoviesService moviesService;
 
+    @Autowired
+    private  CinemasService cinemasService;
 
     @RequestMapping(value = "/movies")
     public String toMovies( Model model) throws SQLException {
-        ApplicationContext applicationContext = new ClassPathXmlApplicationContext("applicationContext.xml");
-        MoviesService moviesService = applicationContext.getBean("moviesService", MoviesService.class);
+//        ApplicationContext applicationContext = new ClassPathXmlApplicationContext("applicationContext.xml");
+//        MoviesService moviesService = applicationContext.getBean("moviesService", MoviesService.class);
         moviesService.setTableMovies();
         model.addAttribute("moviesList", moviesService.getMoviesRepository().getMovies());
     return "hello";
@@ -35,8 +39,8 @@ public class FrontController {
 
     @RequestMapping(value = "/cinemas")
     public String toCinemas( Model model) throws SQLException {
-        ApplicationContext applicationContext = new ClassPathXmlApplicationContext("applicationContext.xml");
-        CinemasService cinemasService = applicationContext.getBean("cinemasService", CinemasService.class);
+//        ApplicationContext applicationContext = new ClassPathXmlApplicationContext("applicationContext.xml");
+//        CinemasService cinemasService = applicationContext.getBean("cinemasService", CinemasService.class);
         cinemasService.setTableCinemas();
         model.addAttribute("cinemasList", cinemasService.getCinemasRepository().getAllCinemas());
         return "cinemas";
