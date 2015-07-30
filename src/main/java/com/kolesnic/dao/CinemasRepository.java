@@ -16,4 +16,5 @@ public interface CinemasRepository {
     List<Cinemas> getAllCinemas() throws SQLException;
     void deleteCinemas(Cinemas cinema) throws SQLException;
     List<Cinemas> generateCinemas();
+    List<Cinemas> findAllWithDetail();
 }

@@ -89,6 +89,27 @@ public class HibernateCinemasRepositoryImpl implements CinemasRepository {
         return cinemasList;
     }
 
+    public List<Cinemas> findAllWithDetail() {
+        Session session = HibernateUtils.getSessionFactory().openSession();
+        Transaction tx = null;
+        List<Cinemas> cinemasList = new ArrayList<Cinemas>();
+
+        try {
+            tx = session.beginTransaction();
+            cinemasList = (List<Cinemas>) session.getNamedQuery("Contact.findAllWithDetail").list();
+            tx.commit();
+
+        } catch (HibernateException e) {
+            if (tx != null) tx.rollback();
+            e.printStackTrace();
+        } finally {
+            session.close();
+        }
+        return cinemasList;
+
+    }
+
+
     public void deleteCinemas(Cinemas cinema) throws SQLException {
         Session session = HibernateUtils.getSessionFactory().openSession();
         Transaction tx = null;

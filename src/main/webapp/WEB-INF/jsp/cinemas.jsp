@@ -15,7 +15,7 @@
 
          <br>
             <li>
-            Name of cinema: <a href="/">${cinema.name}</a> <p>Adres of movie: ${cinema.location}</p> <p>Number of seats: ${cinema.numberOfSeats}</p>
+            Name of cinema: <a href="/schedule">${cinema.name}</a> <p>Adres of movie: ${cinema.location}</p> <p>Number of seats: ${cinema.numberOfSeats}</p>
              </li>
    </c:forEach>
   </ul>

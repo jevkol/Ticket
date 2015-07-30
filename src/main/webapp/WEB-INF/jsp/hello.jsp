@@ -15,7 +15,7 @@
 
          <br>
             <li>
-            Name of movie: <a href="/">${style.name}</a> <p>Description of movie: ${style.description}</p>
+            Name of movie: <a href="/schedule">${style.name}</a> <p>Description of movie: ${style.description}</p>
              </li>
    </c:forEach>
   </ul>

@@ -1,72 +1,77 @@
 package com.kolesnic.entity;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
+
+import javax.persistence.*;
+import java.io.Serializable;
+import java.util.Calendar;
 import java.util.Date;
 
+//@Component
+//@Scope("prototype")
 @Entity
 @Table(name = "SCHEDULE")
-public class  Schedule{
+public class  Schedule implements Serializable {
 
-@Column(name="Movie")
-    private String movieName;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "ID", unique = true, nullable = false)
+    private Long id;
 
-    @Column(name="Cinema")
-    private  String cinemaName;
 
-    @Column(name="Date")
-    private Date date;
 
-    @Column(name= "Time")
-    private int time;
+
+    private Long movieID;
+
+
+    private  Long cinemaID;
+
+
+    private Calendar date;
+
+
+//    private Cinemas cinemas;
+//    @ManyToOne( optional = false)
+//    @JoinColumn(name = "CINEMA_ID")
+//    public Cinemas getCinemas() {return this.cinemas;}
+//    public void setCinemas(Cinemas cinemas) {this.cinemas = cinemas;}
+
 
     public Schedule(){}
 
-    @Id
-    @GeneratedValue
-    @Column(name = "ID")
-    private int id;
-
-    public int getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
     }
-
-    public String getMovieName() {
-        return movieName;
+    @Column(name="MOVIE_ID", nullable = false, length = 4)
+    public Long getMovieID() {
+        return movieID;
     }
 
-    public void setMovieName(String movieName) {
-        this.movieName = movieName;
+    public void setMovieID(Long movieID) {
+        this.movieID = movieID;
+    }
+    @Column( name="CINEMA_ID", nullable = false, length = 4)
+    public Long getCinemaID() {
+        return cinemaID;
     }
 
-    public String getCinemaName() {
-        return cinemaName;
+    public void setCinemaID(Long cinemaID) {
+        this.cinemaID = cinemaID;
     }
-
-    public void setCinemaName(String cinemaName) {
-        this.cinemaName = cinemaName;
-    }
-
-    public Date getDate() {
+    @Temporal(value = TemporalType.TIMESTAMP)
+    @Column(name="DATE", nullable = false)
+    public Calendar getDate() {
         return date;
     }
 
-    public void setDate(Date date) {
+    public void setDate(Calendar date) {
         this.date = date;
     }
 
-    public int getTime() {
-        return time;
-    }
 
-    public void setTime(int time) {
-        this.time = time;
-    }
 }

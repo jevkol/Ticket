@@ -35,9 +35,6 @@ public class MoviesServiceImpl implements MoviesService {
         this.moviesRepository = moviesRepository;
     }
 
-//    public  List<Movies> generateMovies(){ return moviesRepository.generateMovies();
-//    }
-
     public void setTableMovies() {
         List<Movies> moviesList = moviesRepository.generateMovies();
         for (Movies movies : moviesList) {

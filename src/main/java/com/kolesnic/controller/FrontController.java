@@ -5,6 +5,7 @@ package com.kolesnic.controller;
  */
 import com.kolesnic.service.CinemasService;
 import com.kolesnic.service.MoviesService;
+import com.kolesnic.service.ScheduleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
@@ -28,22 +29,32 @@ public class FrontController {
     @Autowired
     private  CinemasService cinemasService;
 
+    @Autowired
+    private ScheduleService scheduleService;
+
+
+
+
     @RequestMapping(value = "/movies")
     public String toMovies( Model model) throws SQLException {
-//        ApplicationContext applicationContext = new ClassPathXmlApplicationContext("applicationContext.xml");
-//        MoviesService moviesService = applicationContext.getBean("moviesService", MoviesService.class);
-        moviesService.setTableMovies();
+      moviesService.setTableMovies();
         model.addAttribute("moviesList", moviesService.getMoviesRepository().getMovies());
     return "hello";
     }
 
     @RequestMapping(value = "/cinemas")
     public String toCinemas( Model model) throws SQLException {
-//        ApplicationContext applicationContext = new ClassPathXmlApplicationContext("applicationContext.xml");
-//        CinemasService cinemasService = applicationContext.getBean("cinemasService", CinemasService.class);
+
         cinemasService.setTableCinemas();
         model.addAttribute("cinemasList", cinemasService.getCinemasRepository().getAllCinemas());
         return "cinemas";
+    }
+    @RequestMapping(value = "/schedule")
+    public String toSchedule( Model model) throws SQLException {
+
+        scheduleService.setTableSchedule();
+        model.addAttribute("scheduleList", scheduleService.getScheduleRepository().getAllSchedule());
+        return "schedule";
     }
 
 }
