@@ -47,6 +47,7 @@ public class  Schedule implements Serializable {
     public void setId(Long id) {
         this.id = id;
     }
+
     @Column(name="MOVIE_ID", nullable = false, length = 4)
     public Long getMovieID() {
         return movieID;
@@ -55,6 +56,7 @@ public class  Schedule implements Serializable {
     public void setMovieID(Long movieID) {
         this.movieID = movieID;
     }
+
     @Column( name="CINEMA_ID", nullable = false, length = 4)
     public Long getCinemaID() {
         return cinemaID;
@@ -63,6 +65,7 @@ public class  Schedule implements Serializable {
     public void setCinemaID(Long cinemaID) {
         this.cinemaID = cinemaID;
     }
+
     @Temporal(value = TemporalType.TIMESTAMP)
     @Column(name="DATE", nullable = false)
     public Calendar getDate() {

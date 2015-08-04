@@ -30,8 +30,17 @@ public class ScheduleRepositoryImpl implements ScheduleRepository {
         this.sessionFactory = sessionFactory;
     }
 
+    @Transactional
+    public Long addSchedule(Schedule schedule) throws SQLException {
+        return (Long)sessionFactory.getCurrentSession().save(schedule);
 
+    }
 
+    @Transactional
+    public List<Schedule> getAllSchedule() throws SQLException {
+        return (List<Schedule>) sessionFactory.getCurrentSession().createQuery("from Schedule s").list();
+
+    }
 
 
     public Collection getCinemasByMovieId(Long id) throws SQLException {
@@ -78,26 +87,7 @@ public class ScheduleRepositoryImpl implements ScheduleRepository {
             return elementList;
 
     }
-    @Transactional
-    public Long addSchedule(Schedule schedule) throws SQLException {
-        return (Long)sessionFactory.getCurrentSession().save(schedule);
 
-//        Session session = HibernateUtils.getSessionFactory().openSession();
-//        Transaction tx = null;
-//        Long scheduleID = null;
-//        try{
-//            tx = session.beginTransaction();
-//            scheduleID =  (Long) session.save(schedule);
-//            tx.commit();
-//
-//        }catch (HibernateException e) {
-//            if (tx != null) tx.rollback();
-//            e.printStackTrace();
-//        } finally {
-//            session.close();
-//        }
-//        return scheduleID;
-    }
 
     public void updateSchedule(Schedule schedule) throws SQLException {
         Session session = HibernateUtils.getSessionFactory().openSession();
@@ -134,27 +124,7 @@ public class ScheduleRepositoryImpl implements ScheduleRepository {
 
         return element;
     }
-    @Transactional
-    public List<Schedule> getAllSchedule() throws SQLException {
-        return (List<Schedule>) sessionFactory.getCurrentSession().createQuery("from Schedule s").list();
 
-//        Session session = HibernateUtils.getSessionFactory().openSession();
-//        Transaction tx = null;
-//        List<Schedule> elementList = new ArrayList<Schedule>();
-//
-//        try {
-//            tx = session.beginTransaction();
-//            elementList = session.createCriteria(Schedule.class).list();
-//            tx.commit();
-//
-//        } catch (HibernateException e) {
-//            if (tx != null) tx.rollback();
-//            e.printStackTrace();
-//        } finally {
-//            session.close();
-//        }
-//        return elementList;
-    }
 
     public void deleteSchedule(Schedule schedule) throws SQLException {
         Session session = HibernateUtils.getSessionFactory().openSession();

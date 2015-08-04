@@ -40,42 +40,11 @@ public class HibernateMoviesRepositoryImpl implements MoviesRepository {
     public Long addMovies(Movies movies){
         return (Long)sessionFactory.getCurrentSession().save(movies);
 
-//        Session session = HibernateUtils.getSessionFactory().openSession();
-//        Transaction tx = null;
-//        Long movieID = null;
-//        try{
-//            tx = session.beginTransaction();
-//            movieID =  (Long) session.save(movies);
-//            tx.commit();
-//
-//        }catch (HibernateException e) {
-//            if (tx != null) tx.rollback();
-//            e.printStackTrace();
-//        } finally {
-//            session.close();
-//        }
-//        return movieID;
     }
 
     @Transactional
     public List<Movies> getMovies(){
         return (List<Movies>) sessionFactory.getCurrentSession().createQuery("from Movies m").list();
-
-
-//        Session session = HibernateUtils.getSessionFactory().openSession();
-//        Transaction tx = null;
-//        List<Movies> movieList = new ArrayList<Movies>();
-//        try{
-//            tx = session.beginTransaction();
-//            movieList = session.createCriteria(Movies.class).list();
-//            tx.commit();
-//        } catch (HibernateException e) {
-//            if (tx != null) tx.rollback();
-//            e.printStackTrace();
-//        } finally {
-//            session.close();
-//        }
-//        return movieList;
     }
 
     public void updateMovies(Movies movies){
