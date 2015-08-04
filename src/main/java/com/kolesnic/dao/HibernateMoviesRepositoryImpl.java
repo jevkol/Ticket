@@ -4,12 +4,15 @@ import com.kolesnic.HibernateUtils;
 import com.kolesnic.entity.Movies;
 import com.kolesnic.service.MoviesService;
 import org.hibernate.HibernateException;
+import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.hibernate.Session;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
+import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -19,41 +22,60 @@ import java.util.List;
  * Created by Администратор on 12.07.15.
  */
 @Repository
+@Transactional
 public class HibernateMoviesRepositoryImpl implements MoviesRepository {
 
-    public Long addMovies(Movies movies){
-        Session session = HibernateUtils.getSessionFactory().openSession();
-        Transaction tx = null;
-        Long movieID = null;
-        try{
-            tx = session.beginTransaction();
-            movieID =  (Long) session.save(movies);
-            tx.commit();
+    private SessionFactory sessionFactory;
 
-        }catch (HibernateException e) {
-            if (tx != null) tx.rollback();
-            e.printStackTrace();
-        } finally {
-            session.close();
-        }
-        return movieID;
+    public SessionFactory getSessionFactory() {return sessionFactory;}
+
+    @Resource(name="sessionFactory")
+    public void setSessionFactory(SessionFactory sessionFactory) {
+        this.sessionFactory = sessionFactory;
     }
 
+
+
+    @Transactional
+    public Long addMovies(Movies movies){
+        return (Long)sessionFactory.getCurrentSession().save(movies);
+
+//        Session session = HibernateUtils.getSessionFactory().openSession();
+//        Transaction tx = null;
+//        Long movieID = null;
+//        try{
+//            tx = session.beginTransaction();
+//            movieID =  (Long) session.save(movies);
+//            tx.commit();
+//
+//        }catch (HibernateException e) {
+//            if (tx != null) tx.rollback();
+//            e.printStackTrace();
+//        } finally {
+//            session.close();
+//        }
+//        return movieID;
+    }
+
+    @Transactional
     public List<Movies> getMovies(){
-        Session session = HibernateUtils.getSessionFactory().openSession();
-        Transaction tx = null;
-        List<Movies> movieList = new ArrayList<Movies>();
-        try{
-            tx = session.beginTransaction();
-            movieList = session.createCriteria(Movies.class).list();
-            tx.commit();
-        } catch (HibernateException e) {
-            if (tx != null) tx.rollback();
-            e.printStackTrace();
-        } finally {
-            session.close();
-        }
-        return movieList;
+        return (List<Movies>) sessionFactory.getCurrentSession().createQuery("from Movies m").list();
+
+
+//        Session session = HibernateUtils.getSessionFactory().openSession();
+//        Transaction tx = null;
+//        List<Movies> movieList = new ArrayList<Movies>();
+//        try{
+//            tx = session.beginTransaction();
+//            movieList = session.createCriteria(Movies.class).list();
+//            tx.commit();
+//        } catch (HibernateException e) {
+//            if (tx != null) tx.rollback();
+//            e.printStackTrace();
+//        } finally {
+//            session.close();
+//        }
+//        return movieList;
     }
 
     public void updateMovies(Movies movies){

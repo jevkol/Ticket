@@ -2,11 +2,15 @@ package com.kolesnic.dao;
 
 import com.kolesnic.HibernateUtils;
 import com.kolesnic.entity.Cinemas;
+import com.kolesnic.entity.Movies;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
+import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
+import javax.annotation.Resource;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -16,22 +20,36 @@ import java.util.List;
  * Created by Администратор on 28.07.15.
  */
 @Repository
+@Transactional
 public class HibernateCinemasRepositoryImpl implements CinemasRepository {
+
+    private SessionFactory sessionFactory;
+
+    public SessionFactory getSessionFactory() {return sessionFactory;}
+
+    @Resource(name="sessionFactory")
+    public void setSessionFactory(SessionFactory sessionFactory) {
+        this.sessionFactory = sessionFactory;
+    }
+
+    @Transactional
     public Long addCinemas(Cinemas cinema) throws SQLException {
-        Session session = HibernateUtils.getSessionFactory().openSession();
-        Transaction tx = null;
-        Long cinemaID = null;
-        try {
-            tx = session.beginTransaction();
-            cinemaID =  (Long) session.save(cinema);
-            tx.commit();
-        } catch (HibernateException e) {
-            if (tx != null) tx.rollback();
-            e.printStackTrace();
-        } finally {
-            session.close();
-        }
-        return cinemaID;
+        return (Long)sessionFactory.getCurrentSession().save(cinema);
+
+//        Session session = HibernateUtils.getSessionFactory().openSession();
+//        Transaction tx = null;
+//        Long cinemaID = null;
+//        try {
+//            tx = session.beginTransaction();
+//            cinemaID =  (Long) session.save(cinema);
+//            tx.commit();
+//        } catch (HibernateException e) {
+//            if (tx != null) tx.rollback();
+//            e.printStackTrace();
+//        } finally {
+//            session.close();
+//        }
+//        return cinemaID;
     }
 
     public void updateCinemas(Cinemas cinema) throws SQLException {
@@ -71,22 +89,25 @@ public class HibernateCinemasRepositoryImpl implements CinemasRepository {
     }
 
     public List<Cinemas> getAllCinemas() throws SQLException {
-        Session session = HibernateUtils.getSessionFactory().openSession();
-        Transaction tx = null;
-        List<Cinemas> cinemasList = new ArrayList<Cinemas>();
+        return (List<Cinemas>) sessionFactory.getCurrentSession().createQuery("from Cinemas c").list();
 
-        try {
-            tx = session.beginTransaction();
-            cinemasList = session.createCriteria(Cinemas.class).list();
-            tx.commit();
 
-        } catch (HibernateException e) {
-            if (tx != null) tx.rollback();
-            e.printStackTrace();
-        } finally {
-            session.close();
-        }
-        return cinemasList;
+//        Session session = HibernateUtils.getSessionFactory().openSession();
+//        Transaction tx = null;
+//        List<Cinemas> cinemasList = new ArrayList<Cinemas>();
+//
+//        try {
+//            tx = session.beginTransaction();
+//            cinemasList = session.createCriteria(Cinemas.class).list();
+//            tx.commit();
+//
+//        } catch (HibernateException e) {
+//            if (tx != null) tx.rollback();
+//            e.printStackTrace();
+//        } finally {
+//            session.close();
+//        }
+//        return cinemasList;
     }
 
     public List<Cinemas> findAllWithDetail() {

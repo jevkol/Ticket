@@ -2,13 +2,12 @@ package com.kolesnic.dao;
 
 import com.kolesnic.HibernateUtils;
 import com.kolesnic.entity.Schedule;
-import org.hibernate.Criteria;
-import org.hibernate.HibernateException;
-import org.hibernate.Session;
-import org.hibernate.Transaction;
+import org.hibernate.*;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
+import javax.annotation.Resource;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -19,7 +18,21 @@ import java.util.List;
  * Created by Администратор on 29.07.15.
  */
 @Repository
+@Transactional
 public class ScheduleRepositoryImpl implements ScheduleRepository {
+
+    private SessionFactory sessionFactory;
+
+    public SessionFactory getSessionFactory() {return sessionFactory;}
+
+    @Resource(name="sessionFactory")
+    public void setSessionFactory(SessionFactory sessionFactory) {
+        this.sessionFactory = sessionFactory;
+    }
+
+
+
+
 
     public Collection getCinemasByMovieId(Long id) throws SQLException {
         Session session = HibernateUtils.getSessionFactory().openSession();
@@ -65,23 +78,25 @@ public class ScheduleRepositoryImpl implements ScheduleRepository {
             return elementList;
 
     }
-
+    @Transactional
     public Long addSchedule(Schedule schedule) throws SQLException {
-        Session session = HibernateUtils.getSessionFactory().openSession();
-        Transaction tx = null;
-        Long scheduleID = null;
-        try{
-            tx = session.beginTransaction();
-            scheduleID =  (Long) session.save(schedule);
-            tx.commit();
+        return (Long)sessionFactory.getCurrentSession().save(schedule);
 
-        }catch (HibernateException e) {
-            if (tx != null) tx.rollback();
-            e.printStackTrace();
-        } finally {
-            session.close();
-        }
-        return scheduleID;
+//        Session session = HibernateUtils.getSessionFactory().openSession();
+//        Transaction tx = null;
+//        Long scheduleID = null;
+//        try{
+//            tx = session.beginTransaction();
+//            scheduleID =  (Long) session.save(schedule);
+//            tx.commit();
+//
+//        }catch (HibernateException e) {
+//            if (tx != null) tx.rollback();
+//            e.printStackTrace();
+//        } finally {
+//            session.close();
+//        }
+//        return scheduleID;
     }
 
     public void updateSchedule(Schedule schedule) throws SQLException {
@@ -119,24 +134,26 @@ public class ScheduleRepositoryImpl implements ScheduleRepository {
 
         return element;
     }
-
+    @Transactional
     public List<Schedule> getAllSchedule() throws SQLException {
-        Session session = HibernateUtils.getSessionFactory().openSession();
-        Transaction tx = null;
-        List<Schedule> elementList = new ArrayList<Schedule>();
+        return (List<Schedule>) sessionFactory.getCurrentSession().createQuery("from Schedule s").list();
 
-        try {
-            tx = session.beginTransaction();
-            elementList = session.createCriteria(Schedule.class).list();
-            tx.commit();
-
-        } catch (HibernateException e) {
-            if (tx != null) tx.rollback();
-            e.printStackTrace();
-        } finally {
-            session.close();
-        }
-        return elementList;
+//        Session session = HibernateUtils.getSessionFactory().openSession();
+//        Transaction tx = null;
+//        List<Schedule> elementList = new ArrayList<Schedule>();
+//
+//        try {
+//            tx = session.beginTransaction();
+//            elementList = session.createCriteria(Schedule.class).list();
+//            tx.commit();
+//
+//        } catch (HibernateException e) {
+//            if (tx != null) tx.rollback();
+//            e.printStackTrace();
+//        } finally {
+//            session.close();
+//        }
+//        return elementList;
     }
 
     public void deleteSchedule(Schedule schedule) throws SQLException {
